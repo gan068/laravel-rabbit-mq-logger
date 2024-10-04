@@ -16,7 +16,7 @@
 ### install
 
 ```bash
-composer require gan068/laravel-rabbit-mq-logger "^1.0"
+composer require gan068/laravel-rabbit-mq-logger "~1.0"
 ```
 
 ### publish vendor
