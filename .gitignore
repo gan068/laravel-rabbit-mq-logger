@@ -1,0 +1,5 @@
+.idea
+.history
+/vendor
+/composer.lock
+.env
