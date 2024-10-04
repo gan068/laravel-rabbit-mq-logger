@@ -36,13 +36,13 @@ modify `config/logging.php` add
         'rabbit_mq_demo' => [
             'driver' => 'custom',
             'via' => \gan068\Logging\RabbitMQLogger::class,
-            'with' => config('rabbit_mq_logger.demo'),
+            'with' => 'demo',
         ],
         # for real usage
         'rabbit_mq' => [
             'driver' => 'custom',
             'via' => \gan068\Logging\RabbitMQLogger::class,
-            'with' => config('rabbit_mq_logger.rabbit_mq'),
+            'with' => 'rabbit_mq',
         ],
         ...
     ]

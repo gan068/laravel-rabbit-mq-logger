@@ -57,7 +57,7 @@ class RabbitMQHandler extends AbstractProcessingHandler
      */
     public function write(LogRecord $record): void
     {
-        $data = json_encode($record->toArray());
+        $data = $record->formatted;
         $msg = new AMQPMessage($data, [
             'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT
         ]);
