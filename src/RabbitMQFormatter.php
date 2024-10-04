@@ -27,17 +27,9 @@ class RabbitMQFormatter extends JsonFormatter
      */
     public function format(LogRecord $record): string
     {
-        $fixed_record = $this->normalize($record);
-
-        //normal context for elk search
-        if (isset($fixed_record['context'])) {
-            if (!isset($fixed_record['context']['exception'])) {
-                $fixed_record['context'] = ['json' => json_encode($fixed_record['context'])];
-            }
-        }
         $host = php_uname('n');
         $requestType = (strpos(php_sapi_name(), 'cli') !== false) ? 'cmd' : 'http';
-        $fixed_record += [
+        $record['extra'] += [
             'host' => $host,
             'queryString' => request()->server('REQUEST_URI'),
             'requestType' => $requestType,
@@ -45,9 +37,30 @@ class RabbitMQFormatter extends JsonFormatter
                 'log_name' => $this->logName,
                 'hash' => $this->hash,
                 'tag' => 'laravel',
-                'type' => "laravel-log-{$this->logName}",
             ],
         ];
-        return $this->toJson($fixed_record, true) . ($this->appendNewline ? "\n" : '');
+        $normalized = parent::normalizeRecord($record);
+
+        if (isset($normalized['context']) && $normalized['context'] === []) {
+            if ($this->ignoreEmptyContextAndExtra) {
+                unset($normalized['context']);
+            } else {
+                $normalized['context'] = new \stdClass();
+            }
+        }
+        if (isset($normalized['context'])) {
+            //normal context for elk search
+            $normalized['context'] = ['json' => json_encode($normalized['context'])];
+        }
+
+        if (isset($normalized['extra']) && $normalized['extra'] === []) {
+            if ($this->ignoreEmptyContextAndExtra) {
+                unset($normalized['extra']);
+            } else {
+                $normalized['extra'] = new \stdClass();
+            }
+        }
+
+        return $this->toJson($normalized, true) . ($this->appendNewline ? "\n" : '');
     }
 }

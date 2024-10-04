@@ -1,7 +1,7 @@
 {
   "name": "gan068/laravel-rabbit-mq-logger",
   "description": "produce log to RabbitMQ queue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "library",
   "license": "MIT",
   "authors": [
