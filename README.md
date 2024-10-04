@@ -6,7 +6,7 @@
     - [publish vendor](#publish-vendor)
     - [log settings](#log-settings)
     - [edit `.env`](#edit-env)
-    - [add more Kafka topic](#add-more-kafka-topic)
+    - [add more topic](#add-more-topic)
   - [usage](#usage)
 
 ## Requirements
@@ -36,13 +36,13 @@ modify `config/logging.php` add
         'rabbit_mq_demo' => [
             'driver' => 'custom',
             'via' => \gan068\Logging\RabbitMQLogger::class,
-            'with' => config('rabbit_mq_logger.demo'),
+            'with' => 'demo',
         ],
         # for real usage
         'rabbit_mq' => [
             'driver' => 'custom',
             'via' => \gan068\Logging\RabbitMQLogger::class,
-            'with' => config('rabbit_mq_logger.rabbit_mq'),
+            'with' => 'rabbit_mq',
         ],
         ...
     ]
@@ -68,7 +68,7 @@ RABBIT_MQ_LOG_QUEUE=laravel_log_queue
 RABBIT_MQ_LOG_BUBBLE=true
 ```
 
-### add more Kafka topic
+### add more topic
 
 modify `config/logging.php` add
 
@@ -77,7 +77,7 @@ modify `config/logging.php` add
         ...
         'new-rabbit-mq-connection' => [
             'driver' => 'custom',
-            'via' => \gan068\RabbitMQLogger\KafkaLogger::class,
+            'via' => \gan068\Logging\RabbitMQLogger::class,
             'with' => config('rabbit_mq_logger.new_rabbit_mq'),
         ],
         ...

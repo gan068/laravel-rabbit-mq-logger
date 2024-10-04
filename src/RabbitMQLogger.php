@@ -10,14 +10,15 @@ class RabbitMQLogger
 {
     public function __invoke(array $config)
     {
+        $config = config("rabbit_mq_logger.{$config['with']}");
         $handler = new RabbitMQHandler(
             $config
         );
         $hash = Str::uuid()->toString();
-        $formatter = new RabbitMQFormatter($config['name']);
+        $formatter = new RabbitMQFormatter();
         $formatter->setHash($hash);
         $formatter->setLogName($config['name']);
-        if ($config['with']['include_stack_traces'] === true) {
+        if ($config['include_stack_traces'] === true) {
             $formatter->includeStacktraces(true);
         }
         $handler->setFormatter($formatter);
