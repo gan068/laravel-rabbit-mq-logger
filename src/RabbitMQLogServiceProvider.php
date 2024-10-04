@@ -13,7 +13,15 @@ class RabbitMQLogServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $source = realpath($raw = __DIR__ . '/../config/rabbit_mq_logger.php') ?: $raw;
-        $this->mergeConfigFrom($source, 'rabbit_mq_logger');
+        $this->publishes([
+            __DIR__ . '/../config/rabbit_mq_logger.php' => config_path('rabbit_mq_logger.php'),
+        ]);
+    }
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/rabbit_mq_logger.php',
+            'rabbit_mq_logger'
+        );
     }
 }
