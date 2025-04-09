@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace gan068\Logging;
 
 use Monolog\Formatter\JsonFormatter;
-use Monolog\LogRecord;
 
 class RabbitMQFormatter extends JsonFormatter
 {
@@ -25,7 +24,7 @@ class RabbitMQFormatter extends JsonFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(LogRecord $record): string
+    public function format(array $record): string
     {
         $host = php_uname('n');
         $requestType = (strpos(php_sapi_name(), 'cli') !== false) ? 'cmd' : 'http';
@@ -39,7 +38,7 @@ class RabbitMQFormatter extends JsonFormatter
                 'tag' => 'laravel',
             ],
         ];
-        $normalized = parent::normalizeRecord($record);
+        $normalized = $this->normalize($record);
 
         if (isset($normalized['context']) && $normalized['context'] === []) {
             if ($this->ignoreEmptyContextAndExtra) {

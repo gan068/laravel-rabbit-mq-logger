@@ -3,7 +3,6 @@
 namespace gan068\Logging;
 
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\LogRecord;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -52,12 +51,12 @@ class RabbitMQHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param LogRecord $record
+     * @param array $record
      * @return void
      */
-    public function write(LogRecord $record): void
+    public function write(array $record): void
     {
-        $data = $record->formatted;
+        $data = $record['formatted'];
         $msg = new AMQPMessage($data, [
             'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT
         ]);
